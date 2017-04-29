@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Moderator server",
+  "main": "moderator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernando1124/literate-spoon.git"
+  },
+  "keywords": [
+    "Crypto",
+    "Fucking",
+    "Game"
+  ],
+  "author": "Sr.Tripa, TheOldGuyFromCocoon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fernando1124/literate-spoon/issues"
+  },
+  "homepage": "https://github.com/fernando1124/literate-spoon#readme",
+  "dependencies": {
+    "express": "4.15.2",
+    "ramda": "0.23.0",
+    "ramda-fantasy": "0.8.0",
+    "request": "2.81.0",
+    "require": "2.4.20"
+  }
+}
