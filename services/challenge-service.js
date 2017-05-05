@@ -3,7 +3,16 @@ const ChallengeService = (request, response) => {
 	const SYSTEM = require('../server/systemConstants'),
 		  HTTPS = require('https'),
 		  HTTP = require('http'),
-		  COLLECTOR = require('../server/node_modules/stream-collect');	
+		  COLLECTOR = require('../server/node_modules/stream-collect');
+
+	function ResponseObject(longMessage, snippet, link) { 
+		const responseObject = {
+			"longMessage": longMessage,
+			"shortMessage": snippet,
+			"link": link
+		}
+		return responseObject;
+	};
 
 	const getSearchRequest = () => {
 		const randomPageNumber = Math.floor(Math.random() * SYSTEM.GOOGLE.MAX_SEARCH_RESULTS);
@@ -18,29 +27,24 @@ const ChallengeService = (request, response) => {
 		}
 	};
 
-	const getRequestObject = (link) => (link.startsWith('http') ? HTTP.request(link) : HTTPS.request(link));
+	const getRequestObject = (link) => (link.startsWith('https') ? HTTPS.request(link) : HTTP.request(link));
 
 	const parseGoogleResponse = (jsonString) => JSON.parse(jsonString);
 
 	const processGoogleResponse = (jsonObject) => { 
 		const randomResultNumber = Math.floor(Math.random() * SYSTEM.GOOGLE.MAX_NUMBER_OF_RESULTS_PER_PAGE);		
 		
-		return { 
-			"longMessage": "",
-			"shortMessage": jsonObject.items[randomResultNumber].snippet,
-			"link": jsonObject.items[randomResultNumber].link
-		} 
+		return new ResponseObject("", 
+			jsonObject.items[randomResultNumber].snippet, 
+			jsonObject.items[randomResultNumber].link);		
 	};
 
 	const respondWithChallenge = (processedResponse) => {			
 		const pageRequest = getRequestObject(processedResponse.link);		
 
-		pageRequest.on("response", (incomingMessage) => { 
-			incomingMessage.pipe(COLLECTOR.stream())
-				.then((pageResult) => { 
-					processedResponse.longMessage = pageResult;
-					return processedResponse;
-				})
+		pageRequest.on('response', (incomingMessage) => { 
+			incomingMessage.pipe(COLLECTOR.PassThrough({"encoding": 'utf8'}))
+				.then((pageResult) => new ResponseObject(pageResult, processedResponse.shortMessage, processedResponse.link))				
 				.then((completeMessage) => response.send(completeMessage));
 		}).end();		
 	};	
@@ -53,7 +57,7 @@ const ChallengeService = (request, response) => {
 	this.serve = () => {
 		const googleSearchRequest = HTTPS.request(getSearchRequest());
 	
-		googleSearchRequest.on("response", handleGoogleResponse).end();
+		googleSearchRequest.on('response', handleGoogleResponse).end();
 	};
 
 	this.serve();
