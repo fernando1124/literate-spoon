@@ -4,7 +4,9 @@ const SYSTEM = {
 	"GOOGLE": {
 		"SEARCH_API_KEY": "AIzaSyBRNvtHuBSR4zSXRQQMrwh0S2NeTp8JE-s",
 		"CUSTOM_SEARCH_ENGINE_ID": "007772182232829932459:oeyk_3udoxy",
-		"SEARCH_TOPIC": "food+recipes"
+		"SEARCH_TOPIC": "food+recipes",
+		"MAX_SEARCH_RESULTS": 500,		
+		"MAX_NUMBER_OF_RESULTS_PER_PAGE": 9
 	}	
 };
 

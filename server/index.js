@@ -1,7 +1,4 @@
-const SYSTEM = require('./systemConstants'),
-	express = require('express'),
-	server = express(),
-	routes = require('./routes');
+const SYSTEM = require('./systemConstants');
 
 const APP = {
 	"init": () => {
