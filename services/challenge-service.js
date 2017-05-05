@@ -38,10 +38,10 @@ const ChallengeService = (request, response) => {
 		pageRequest.on("response", (incomingMessage) => { 
 			incomingMessage.pipe(COLLECTOR.stream())
 				.then((pageResult) => { 
-					console.log("PAGE_RESULT: " + pageResult);
 					processedResponse.longMessage = pageResult;
+					return processedResponse;
 				})
-				.then((completeMessage) => response.send(processedResponse));
+				.then((completeMessage) => response.send(completeMessage));
 		}).end();		
 	};	
 
